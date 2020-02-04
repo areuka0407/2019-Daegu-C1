@@ -41,8 +41,8 @@
     <!-- SCRIPT -->
     <script defer>
         window.addEventListener("load", function(){
-            let form = document.querySelector("#login form");
-            let message = form.querySelector(".help-message");
+            let $form = document.querySelector("#login form");
+            let message = $form.querySelector(".help-message");
 
             const $user_id = $("#user_id")
             const $password = $("#password");
@@ -63,14 +63,21 @@
                 return !result;
             };
 
-            const v = new Validator({form, inputs, errors, final});
+            const v = new Validator({form: $form, inputs, errors, final});
             v.start();
 
 
             // 아이디 기억하기
-            const remember = document.querySelector("#remember");
-            form.addEventListener("submit", () => {
-                localStorage.setItem("")
+            const $remember = document.querySelector("#remember");
+            const remember_id = localStorage.getItem("remember_id");
+            if(remember_id){
+                $user_id.value = remember_id;
+                $remember.checked = true;
+            }
+
+            $form.addEventListener("submit", () => {
+                if($remember.checked ) localStorage.setItem("remember_id", $user_id.value);
+                else localStorage.removeItem("remember_id");
             });
         });
     </script>
