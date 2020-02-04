@@ -29,11 +29,12 @@ function toast(message, background = "bg-red"){
         $box.classList.add("toast-message");
         $box.classList.add(background);
         $box.innerText = item;
+
+        const baseBottom = 60;
+        const unitBottom = 60;
+        $box.style.bottom = (unitBottom * i + baseBottom - 20) + "px";
         document.body.append($box);
 
-        const baseBottom = 100;
-        const unitBottom = 80;
-        $box.style.bottom = (unitBottom * i + baseBottom - 20) + "px";
 
         setTimeout(() => {
             $box.style.bottom = unitBottom * i + baseBottom + "px";

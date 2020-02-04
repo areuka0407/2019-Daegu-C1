@@ -86,15 +86,13 @@ input[type='checkbox']:checked + .check-box {
 
 .toast-message {
     position: fixed;
-    bottom: 80px;
+    right: 20px;
     opacity: 0.5;
-    left: 50%;
-    transform: translateX(-50%);
     padding: 15px 50px;
     background-color: var(--red);
     color: #fff;
     z-index: 100000;
-    border-radius: 20px;
+    border-radius: 5px;
     font-size: 1.05em;
     font-weight: 900;
     box-shadow: 0 0 10px 1px #00000050;

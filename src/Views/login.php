@@ -65,5 +65,12 @@
 
             const v = new Validator({form, inputs, errors, final});
             v.start();
+
+
+            // 아이디 기억하기
+            const remember = document.querySelector("#remember");
+            form.addEventListener("submit", () => {
+                localStorage.setItem("")
+            });
         });
     </script>

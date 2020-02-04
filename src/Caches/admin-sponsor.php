@@ -58,7 +58,6 @@
         </div>
     </div>
     <script defer>
-        /**
         window.onload = function(){
             const form = document.querySelector("#admin-sponsor form");
             

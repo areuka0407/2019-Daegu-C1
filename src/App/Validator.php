@@ -35,7 +35,8 @@ class Validator {
         return $this;
     }
 
-    function execute(){
+    function execute(...$message){
+        $this->result = array_merge($this->result, $message);
         if(count($this->result) > 0){   // 에러 메세지가 1개 이상이면
             back($this->result);
         }
@@ -79,5 +80,11 @@ class Validator {
         if($value < 1000000){
             $this->result[] = $this->errors[$key.".". __FUNCTION__];
         }       
+    }
+
+    function business_id($key, $value){
+        if(!preg_match("/^[0-9]{3}-[0-9]{2}-[0-9]{5}$/", $value)){
+            $this->result[] = $this->errors[$key.".". __FUNCTION__];
+        }
     }
 }

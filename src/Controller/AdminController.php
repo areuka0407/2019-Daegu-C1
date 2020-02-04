@@ -35,27 +35,14 @@ class AdminController extends MasterController {
 
         $validator = new Validator($inputs, $rules, $errors);
         $validator->check()->execute();
-
-        exit;
-
-        // 데이터 검사
-        if($donation % 10000 !== 0) back("후원은 만원 단위로만 가능합니다.");
-        if($donation < 1000000) back("후원은 100만원 이상 가능합니다.");
         
-
-        // 이미지 검사
-        $image = $_FILES['sponsor_logo'];
-
-        if(!$image) back("로고 파일을 첨부해 주세요.");
-        
-        $ext = strtolower( substr($image['name'], -3) );
-        if(strncmp($image['type'], "image", 5)) back("올바른 형태의 이미지 파일이 아닙니다..");
-
         // 이미지 업로드
         
+        $ext = strtolower( substr($image['name'], -3) );
         $basePath = IMAGE.DS."sponsors";
-        $filename = random_varchar(50). "." .$ext;
-        while(is_file($basePath.DS.$filename)) $filename = random_varchar(50). "." .$ext;
+        do {
+            $filename = random_varchar(50). "." .$ext;
+        } while(is_file($basePath.DS.$filename));
         
         // 이미지 업로드가 성공한다면 삽입
         if(move_uploaded_file($image['tmp_name'], $basePath.DS.$filename)){
