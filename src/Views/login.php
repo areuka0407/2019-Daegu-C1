@@ -54,12 +54,12 @@
 
             const errors = {
                 user_id: "아이디를 입력해주세요",
-                password: "비밀번호를 입력해주세요."
+                password: "비밀번호를 입력해주세요"
             };
 
             const final = () => {
                 let result = $user_id.value.trim() === "" && $password.value.trim() === "";
-                if(result) toast("아이디 및 비밀번호를 입력주세요.");
+                if(result) toast("아이디 및 비밀번호를 입력해주세요.");
                 return !result;
             };
 

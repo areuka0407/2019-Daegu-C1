@@ -41,10 +41,10 @@
                 $segment = session()->get('segment')[1];
             @endphp
             <div class="nav">
-                <div class="item @echo($segment === 'sponsor' ? 'active' : '')">
+                <div class="item {{$segment === 'sponsor' ? 'active' : ''}}">
                     <a href="/admin/sponsor">스폰서 관리</a>
                 </div>
-                <div class="item @echo($segment === 'screen' || $segment === 'request' || $segment === 'timetable' ? 'active' : '')">
+                <div class="item {{$segment === 'screen' || $segment === 'request' || $segment === 'timetable' ? 'active' : ''}}">
                     <a href="/admin/screen">상영작/요청작 관리</a>
                     <div class="under-box">
                         <a href="/admin/screen">공식 상영작 관리</a>
@@ -52,7 +52,7 @@
                         <a href="/admin/timetable">상영시간표</a>
                     </div>
                 </div>
-                <div class="item @echo($segment === 'cinema' ? 'active' : '')">
+                <div class="item {{$segment === 'cinema' ? 'active' : ''}}">
                     <a href="/admin/cinema">영화관 관리</a>
                 </div>
             </div>

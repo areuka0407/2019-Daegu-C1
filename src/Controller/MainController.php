@@ -81,12 +81,25 @@ class MainController extends MasterController {
         else $this->view("login");
     }
     function login(){
+        extract($_POST);
         $ADMIN = (object)[
             "user_id" => "admin",
             "password" => "1234"
         ];
         
-        extract($_POST);
+        
+        // 값 검사
+        $errors = [
+            "user_id" => "아이디를 입력해주세요",
+            "password" => "비밀번호를 입력해주세요"
+        ];
+
+        $validator = new Validator($_POST, [], $errors);
+        $validator->check();
+        $user_id === "" && $password === "" ? $validator->execute("아이디 및 비밀번호를 입력해주세요.") : $validator->execute();
+        
+        
+        // 아이디 인증
         if($user_id !== $ADMIN->user_id) return back("일치하는 아이디를 찾을 수 없습니다.");
         if($password !== $ADMIN->password) return back("비밀번호가 일치하지 않습니다.");
 
