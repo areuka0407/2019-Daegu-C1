@@ -12,6 +12,28 @@ class MainController extends MasterController {
         $this->view("index", $data);
     }
 
+    function aboutPage(){
+        $this->view("about");
+    }
+
+    /**
+     * 상영작 요청 페이지
+     */
+
+    function requestPage(){
+        $this->view("request");
+    }
+    
+    function addRequest(){
+        checkUp();
+        extract($_POST);
+
+        if(!preg_match("/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/", $ceo_email)) back("올바른 형태의 이메일이 아닙니다.");
+        if(!preg_match("/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/", $ceo_email)) back("올바른 형태의 이메일이 아닙니다.");
+        
+    }
+
+
     /**
      * 로그인 관리
      */

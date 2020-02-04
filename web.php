@@ -8,6 +8,12 @@ use Areuka\App\Router;
 
 // Main
 Router::get("/", "MainController@indexPage");
+Router::get("/about", "MainController@aboutPage");
+
+
+// Request
+Router::get("/request", "MainController@requestPage");
+Router::post("/request", "MainController@addRequest");
 
 
 // Login

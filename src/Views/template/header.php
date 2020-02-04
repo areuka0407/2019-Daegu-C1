@@ -43,8 +43,8 @@
                 <div class="item @echo( $segment === 'about' ? 'active' : '' )">
                     <a href="/about">영화제 소개</a>
                 </div>
-                <div class="item @echo( $segment === 'request-screen' ? 'active' : '' )">
-                    <a href="/request-screen">상영 요청</a>
+                <div class="item @echo( $segment === 'request' ? 'active' : '' )">
+                    <a href="/request">상영 요청</a>
                 </div>
                 <div class="item @echo( $segment === 'reserve' ? 'active' : '' )">
                     <a href="/reserve">상영작 예매</a>

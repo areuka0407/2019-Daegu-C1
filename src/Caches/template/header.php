@@ -21,7 +21,7 @@
     <?php if ($message): ?>
     <script>
         window.addEventListener("load", () => {
-            toast("<?= $message[0] ?>", "<?= $message[1] ?>");
+            toast("@echo($message[0])", "@echo($message[1])");
         });
     </script>
     <?php endif; ?>
@@ -37,16 +37,16 @@
                 <img src="images/logo.png" title="부산국제영화제" alt="부산국제영화제" height="80">
             </a>
             <div class="nav">
-                <div class="item <?=  $segment === 'home' ? 'active' : ''  ?>">
+                <div class="item @echo( $segment === 'home' ? 'active' : '' )">
                     <a href="/">부산국제영화제</a>
                 </div>
-                <div class="item <?=  $segment === 'about' ? 'active' : ''  ?>">
+                <div class="item @echo( $segment === 'about' ? 'active' : '' )">
                     <a href="/about">영화제 소개</a>
                 </div>
-                <div class="item <?=  $segment === 'request-screen' ? 'active' : ''  ?>">
-                    <a href="/request-screen">상영 요청</a>
+                <div class="item @echo( $segment === 'request' ? 'active' : '' )">
+                    <a href="/request">상영 요청</a>
                 </div>
-                <div class="item <?=  $segment === 'reserve' ? 'active' : ''  ?>">
+                <div class="item @echo( $segment === 'reserve' ? 'active' : '' )">
                     <a href="/reserve">상영작 예매</a>
                 </div>
             </div>
