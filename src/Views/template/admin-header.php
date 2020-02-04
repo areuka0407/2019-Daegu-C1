@@ -44,10 +44,10 @@
                 <div class="item {{$segment === 'sponsor' ? 'active' : ''}}">
                     <a href="/admin/sponsor">스폰서 관리</a>
                 </div>
-                <div class="item {{$segment === 'screen' || $segment === 'request' || $segment === 'timetable' ? 'active' : ''}}">
-                    <a href="/admin/screen">상영작/요청작 관리</a>
+                <div class="item {{$segment === 'official' || $segment === 'request' || $segment === 'timetable' ? 'active' : ''}}">
+                    <a href="/admin/official">상영작/요청작 관리</a>
                     <div class="under-box">
-                        <a href="/admin/screen">공식 상영작 관리</a>
+                        <a href="/admin/official">공식 상영작 관리</a>
                         <a href="/admin/request">요청작 관리</a>
                         <a href="/admin/timetable">상영시간표</a>
                     </div>

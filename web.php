@@ -26,10 +26,14 @@ Router::get("/logout", "MainController@logout");
  * Admin
  */
 
+// Sponsor
 Router::get("/admin/sponsor", "AdminController@sponsorPage");
 Router::post("/admin/sponsor", "AdminController@addSponsor");
 RouteR::post("/admin/sponsor-remove/{id}", "AdminController@removeSponsor");
 
+// Official
+Router::get("/admin/official", "AdminController@officialPage");
+Router::post("/admin/official", "AdminController@addOfficial");
 
 Router::connect();
 

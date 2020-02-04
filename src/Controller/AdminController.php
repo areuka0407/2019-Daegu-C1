@@ -63,4 +63,35 @@ class AdminController extends MasterController {
 
         return json_response($result);
     }
+
+
+    /**
+     * 공식 상영작 관리
+     */
+    function officialPage(){
+        $this->view("official");
+    }
+
+    function addOfficial(){
+        extract($_POST);
+
+        $inputs = array_merge($_POST, $_FILES);
+        $rules = [
+            "movie_poster" => "image",
+            "running_time" => "number"
+        ];
+        $errors = [
+            "movie_name" => "영화 제목을 입력하세요.",
+            "movie_poster" => "영화 포스터를 첨부하세요.",
+            "movie_poster.image" => "올바른 형태의 이미지 파일이 아닙니다.",
+            "director" => "감독명을 입력하세요.",
+            "running_time" => "러닝타임을 입력하세요.",
+            "running_time.number" => "올바른 형태의 러닝타임이 아닙니다."
+        ];
+
+        $validator = new Validator($inputs, $rules, $errors);
+        $validator->check()->execute();
+
+        
+    }
 }
