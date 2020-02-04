@@ -92,6 +92,15 @@ class AdminController extends MasterController {
         $validator = new Validator($inputs, $rules, $errors);
         $validator->check()->execute();
 
+        $poster = $_FILES['movie_poster'];
+        $ext = substr($poster['name'], -3);
+        $savePath = IMAGE.DS."posters";
+        do {
+            $saveName = random_varchar(50).".".$ext;
+        } while(is_file($savePath.DS.$saveName));
         
+        if(move_uploaded_file($poster['tmp_name'], $savePath.DS.$saveName)){
+            // DB::query("INSERT INTO");
+        }
     }
 }
