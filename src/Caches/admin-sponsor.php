@@ -58,6 +58,7 @@
         </div>
     </div>
     <script defer>
+        /**
         window.onload = function(){
             const form = document.querySelector("#admin-sponsor form");
             
@@ -73,7 +74,7 @@
             };
 
             const errors = {
-                sponsor_name: "스폰서 명을 입력해주십시오",
+                sponsor_name: "스폰서 명을 입력하세요.",
                 sponsor_logo: "올바른 형태의 이미지 파일이 아닙니다.",
             };
 

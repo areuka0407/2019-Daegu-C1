@@ -19,11 +19,15 @@
     ?>
 
     <?php if ($message): ?>
-    <script>
-        window.addEventListener("load", () => {
-            toast("@echo($message[0])", "@echo($message[1])");
-        });
-    </script>
+        <?php
+        $content = is_array($message[0]) ? $message[0] : [$message[0]];
+        $type = $message[1];
+        ?>
+        <script>
+            window.addEventListener("load", () => {
+                toast(<?=  json_encode($content, JSON_UNESCAPED_UNICODE )  ?>, "<?=  $type  ?>");
+            });
+        </script>
     <?php endif; ?>
 </head>
 <body>

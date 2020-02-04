@@ -8,40 +8,50 @@ const $ = (s) => document.querySelector(s);
 /**
  * 토스트 메세지
  */
-let $box = null;
-this.toast = function(message, background = "bg-red"){
-    if($box){
-        this.clearTimeout(this.animateQueue);
-        $box.style.transition = "0.5s";
-        $box.style.bottom = "80px";
-        $box.style.opacity = "0";
+function toast(message, background = "bg-red"){
+    let current_queue = document.querySelectorAll(".toast-message");
 
-        let temp = $box;
-        this.setTimeout(() => {
-            temp.remove();
-            temp = null;
-        }, 500);
+    if(current_queue.length > 0){
+        current_queue.forEach(item => {
+            clearTimeout(item.current_anime);
+            item.style.transition = "0.5s";
+            item.style.bottom = "80px";
+            item.style.opacity = "0";
+    
+            setTimeout(() => item.remove(), 500);
+        });
     }
 
-    $box = document.createElement("div");
-    $box.classList.add("toast-message");
-    $box.classList.add(background);
-    $box.innerText = message;
+    message = Array.isArray(message) ? message : [message];
 
-    this.document.body.append($box);
-    this.setTimeout(() => {
-        $box.style.bottom = "100px";
-        $box.style.opacity = "1";
-        this.animateQueue = this.setTimeout(() => {
-            $box.style.transition = "0.5s";
-            $box.style.bottom = "80px";
-            $box.style.opacity = "0";
-            this.animateQueue = this.setTimeout(() => {
-                $box.remove();
-                $box = null;
-            }, 500);
-        }, 1000);
+    message.forEach((item, i) => {
+        let $box = document.createElement("div");
+        $box.classList.add("toast-message");
+        $box.classList.add(background);
+        $box.innerText = item;
+        document.body.append($box);
+
+        const baseBottom = 100;
+        const unitBottom = 80;
+        $box.style.bottom = (unitBottom * i + baseBottom - 20) + "px";
+
+        setTimeout(() => {
+            $box.style.bottom = unitBottom * i + baseBottom + "px";
+            $box.style.opacity = "1";
+            $box.animateQueue = setTimeout(() => {
+                $box.style.transition = "0.5s";
+                $box.style.bottom = (unitBottom * i + baseBottom - 20) + "px";
+                $box.style.opacity = "0";
+                $box.animateQueue = setTimeout(() => {
+                    $box.remove();
+                    $box = null;
+                }, 500);
+            }, 2000);
+        });
     });
+    
+
+    
 }
 
 /**

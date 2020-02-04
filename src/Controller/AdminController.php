@@ -2,6 +2,7 @@
 namespace Areuka\Controller;
 
 use Areuka\App\DB;
+use Areuka\App\Validator;
 
 class AdminController extends MasterController {
     /**
@@ -13,8 +14,29 @@ class AdminController extends MasterController {
         $this->view("admin-sponsor", ["sponsors" => $sponsors]);
     }
     function addSponsor(){
-        checkUp();
         extract($_POST);
+
+        $inputs = array_merge($_POST, $_FILES);
+
+        $rules = [
+            "sponsor_logo" => "image",
+            "donation" => "number, donation_unit, donation_min"
+        ];
+
+        $errors = [
+            "sponsor_name" => "스폰서 명을 입력하세요",
+            "sponsor_logo" => "스폰서 로고를 첨부하세요.",
+            "sponsor_logo.image" => "올바른 형태의 이미지 파일이 아닙니다.",
+            "donation" => "후원할 금액을 입력하세요.",
+            "donation.number" => "올바른 형태의 금액이 아닙니다.",
+            "donation.donation_unit" => "후원은 만원 단위로만 가능합니다.",
+            "donation.donation_min" => "후원은 100만원 이상 가능합니다.",
+        ];
+
+        $validator = new Validator($inputs, $rules, $errors);
+        $validator->check()->execute();
+
+        exit;
 
         // 데이터 검사
         if($donation % 10000 !== 0) back("후원은 만원 단위로만 가능합니다.");
