@@ -1,10 +1,15 @@
 <?php
 namespace Areuka\Controller;
 
+use Areuka\App\DB;
+
 class MainController extends MasterController {
 
     function indexPage(){
-        $this->view("index");
+        $data = [];
+        $data['sponsorList'] = DB::fetchAll("SELECT * FROM sponsors ORDER BY donation DESC");
+
+        $this->view("index", $data);
     }
 
     /**

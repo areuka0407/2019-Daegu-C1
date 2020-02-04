@@ -52,48 +52,11 @@
                 <h1>Sponsor of Festival</h1>
             </div>
             <div class="list">
-                <div class="image">
-                    <img src="images/sponsors/sponsor-1.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-2.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-3.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-4.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-5.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-6.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-7.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-8.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-9.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-10.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-11.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-12.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-13.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
-                <div class="image">
-                    <img src="images/sponsors/sponsor-14.png" alt="스폰서 이미지" title="스폰서 이미지">
-                </div>
+                @foreach($sponsorList as $sponsor)
+                    <div class="image">
+                        <img src="images/sponsors/{{$sponsor->logo_filename}}" alt="{{$sponsor->sponsor_name}}" title="{{$sponsor->sponsor_name}}">
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

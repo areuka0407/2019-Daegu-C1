@@ -503,12 +503,12 @@ footer .copy-right {
     line-height: 60px;
     cursor: pointer;
 }
+
 #sponsor .list .image img {
     width: auto;
     height: 100%;
 }
 
-#sponsor .list .image:nth-child(9) img { width: 100%; height: auto; }
 
 #sponsor .list .image:hover { filter: grayscale(0%); transition: 0.3s; }
 #sponsor .list .image:nth-child(7n) { border-right: none; }
