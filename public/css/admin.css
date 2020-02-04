@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+table .delete {
+    cursor: pointer;
+    color: var(--red);
+    font-weight: 900;
+    text-align: center;
+}
+
+/* 관리자 영역 - 영화관 관리
+*/
+
+
+#admin-cinema table th:nth-child(1){ padding-left: 50px; }
+#admin-cinema table td:nth-child(1){ padding-left: 50px; }
+#admin-cinema table th:nth-child(2){ text-align: right; padding-right: 30px; }
+#admin-cinema table td:nth-child(2){ text-align: right; padding-right: 30px; }

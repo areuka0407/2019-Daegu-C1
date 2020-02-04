@@ -2,23 +2,27 @@
 namespace Areuka\App;
 
 class Session {
-    public has($key){
+    public function has($key){
         return isset($_SESSION[$key]);
     }
 
-    public set($key, $value){
+    public function set($key, $value){
         $_SESSION[$key] = $value;
     }
 
-    public get($key, $save = false){
+    public function get($key, $save = false){
         if($this->has($key)){
             $returned = $_SESSION[$key];
 
-            if($save === false){
-                $_SESSION[$key];
+            if($save == false){
+                unset($_SESSION[$key]);
             }
             return $returned;
         }
-        else return false
+        else return false;
+    }
+
+    public function unset($key){
+        unset($_SESSION[$key]);
     }
 }

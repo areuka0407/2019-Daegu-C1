@@ -1,12 +1,6 @@
 <?php
-namespace Areuka\App;
-
 function session(){
-    return new Session();
-}
-
-function user(){
-    return new User();
+    return new Areuka\App\Session();
 }
 
 function dump(){
@@ -18,11 +12,46 @@ function dump(){
 }
 
 function dd(){
-    call_user_func_array("dump", func_get_args());
+    dump(...func_get_args());
     exit;
 }
 
-function redirect($url, $message = null){
+function redirect($url, $message = null, $background = "bg-danger"){
     header("Location: {$url}");
-    $message !== null && session()->set("message", $message);
+    $message !== null && session()->set("message", [$message, $background]);
+    exit;
+}
+
+function back($message = null, $background = "bg-danger"){
+    $url = $_SERVER["HTTP_REFERER"];
+    header("Location: {$url}");
+    $message !== null && session()->set("message", [$message, $background]);
+    exit;
+}
+
+function json_response($data){
+    header("Content-Type: application/json");
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+}
+
+function checkUp(){
+    foreach($_POST as $input){
+        if(trim($input) === ""){
+            back("모든 정보를 기재해 주세요!");
+        }
+    }
+    return false;
+}
+
+function isLogin(){
+    return session()->has("login");
+}
+
+function random_varchar($length = 30){
+    $string = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+    $result = "";
+    for($i = 0; $i < $length; $i ++){
+        $result .= $string[random_int(0,  strlen($string) - 1)];
+    }
+    return $result;
 }
