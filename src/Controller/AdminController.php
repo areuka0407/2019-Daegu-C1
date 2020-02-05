@@ -149,6 +149,51 @@ class AdminController extends MasterController {
         $this->view("admin-timetable", $data);
     }
 
+    function addSchedule($type, $id){
+        extract($_POST);        
+
+        $rules = [ "start_time" => "timetable" ];
+
+        $errors = [
+            "cid" => "영화관을 선택하세요.",
+            "start_time" => "영화를 시작할 시간을 입력하세요.",
+            "start_time.timetable" => "상영 시간은 24시간 표기법으로 작성해주시기 바랍니다.",
+        ];
+
+        $validator = new Validator($_POST, $rules, $errors);
+        
+        $errors = [];
+        $cinema = DB::find("cinemas", $cid);
+        $movie = DB::find($type, $id);
+        if(!$cinema) $errors[] = "해당 영화관이 존재하지 않습니다.";
+        if(!$movie) $errors[] = "해당 영화이 존재하지 않습니다.";
+
+        $start_time = time2minute($start_time);
+        $end_time = $movie ? $start_time + $movie->running_time : false;
+        if($cinema && ($start_time < time2minute("08:00") || time2minute("25:40") < $end_time)) $errors[] = "영화는 08:00~26:00 내에만 상영될 수 있으며,\n종료시간 + 20분이 26시를 초과할 수 없습니다.";
+
+        $validator->check()->execute(...$errors);
+
+        DB::query("UPDATE `{$type}` SET start_time = ?, end_time = ?, cinema_id = ?", [$start_time, $end_time, $cid]);
+        
+        redirect("/admin/timetable", "시간표가 확정되었습니다.", "bg-success");
+    }
+
+    function getTimetable(){
+        $officials = DB::fetchAll(  "SELECT movie_name, start_time, end_time, C.name cinema_name
+                                    FROM officials O
+                                    LEFT JOIN cinemas C ON C.id = O.cinema_id
+                                    WHERE start_time IS NOT NULL AND end_time IS NOT NULL AND C.name IS NOT NULL");
+        
+        $requests = DB::fetchAll(  "SELECT movie_name, start_time, end_time, C.name cinema_name
+                                    FROM requests O
+                                    LEFT JOIN cinemas C ON C.id = O.cinema_id
+                                    WHERE start_time IS NOT NULL AND end_time IS NOT NULL AND C.name IS NOT NULL");
+        
+        header("Content-Type: application/json");
+        echo json_encode(array_merge($officials, $requests), JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * 영화관 관리
      */
@@ -170,10 +215,18 @@ class AdminController extends MasterController {
         ];
 
         $validator = new Validator($inputs, $rules, $errors);
-        $validator->check()->execute();
+        $validator->check();
+        $overlap = DB::fetch("SELECT * FROM cinemas WHERE name = ?", [$cinema_name]);
+
+        $message = [];
+        if($overlap) $message[] = "중복되는 영화관 명입니다.";
+
+        $validator->execute($message);
+        exit;
         
         $seatFile = $_FILES['seat_file'];
         $seatMap = file_get_contents($seatFile['tmp_name']);
+
 
         DB::query("INSERT INTO cinemas(name, seat_map) VALUES (?, ?)", [$cinema_name, $seatMap]);
         redirect("/admin/cinema", "영화관이 등록되었습니다.", "bg-success");
@@ -184,5 +237,10 @@ class AdminController extends MasterController {
         if(!$find) return back("해당 영화관을 찾을 수 없습니다...");
         DB::query("DELETE FROM cinemas WHERE id = ?", [$id]);
         return redirect("/admin/cinema", "영화관이 삭제되었습니다.", "bg-success");
+    }
+
+    function getCinemaList(){
+        header("Content-Type: application/json");
+        echo json_encode(DB::fetchAll("SELECT * FROM cinemas"), JSON_UNESCAPED_UNICODE);
     }
 }

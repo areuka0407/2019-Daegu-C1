@@ -46,11 +46,14 @@ Router::get("/admin/request-return/{id}", "AdminController@returnRequest");
 
 // Timetable
 Router::get("/admin/timetable", "AdminController@timetablePage");
+Router::post("/admin/timetable/{type}/{id}", "AdminController@addSchedule");
+Router::post("/admin/timetable-list", "AdminController@getTimetable");
 
 // Cinema
 Router::get("/admin/cinema", "AdminController@cinemaPage");
 Router::post("/admin/cinema", "AdminController@addCinema");
 Router::get("/admin/cinema-remove/{id}", "AdminController@removeCinema");
+Router::post("/admin/cinema-list", "AdminController@getCinemaList");
 
 
 Router::connect();

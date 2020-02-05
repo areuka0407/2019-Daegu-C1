@@ -11,7 +11,7 @@
                         <h1>SCHEDULE</h1>
                         <h5>공식 상영작</h5>
                     </div>
-                    <table class="table text-center">
+                    <table id="officials" class="table text-center">
                         <thead>
                             <tr>
                                 <th>영화 제목</th>
@@ -22,7 +22,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($officials as $item): ?>
-                            <tr>
+                            <tr data-id="<?= $item->id ?>">
                                 <td><?= $item->movie_name ?></td>
                                 <td><?= $item->director_name ?></td>
                                 <td><?= time_format($item->running_time) ?></td>
@@ -37,7 +37,7 @@
                         <h1>WAIT REQUEST</h1>
                         <h5>상영 요청작</h5>
                     </div>
-                    <table class="table text-center">
+                    <table id="requests" class="table text-center">
                         <thead>
                             <tr>
                                 <th>영화 제목</th>
@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                             <?php foreach ($requests as $item): ?>
-                            <tr>
+                            <tr data-id="<?= $item->id ?>">
                                 <td><?= $item->movie_name ?></td>
                                 <td><?= $item->director_name ?></td>
                                 <td><?= time_format($item->running_time) ?></td>
@@ -64,7 +64,44 @@
                 <div class="sub-title">
                     <h1>TIME TABLE</h1>
                 </div>
-                <img src="/images/timetable.png" title="영화 시간표" alt="영화 시간표" class="w-100">
+                <img id="timetable" src="/images/timetable.png" title="영화 시간표" alt="영화 시간표" class="w-100">
             </div>
         </div>
     </div>
+    <script src="/js/TimeTable.js" src="text/javascript"></script>
+    <script>
+        window.addEventListener("load", () => {
+            let timetable = new TimeTable("#timetable");
+            timetable.update();
+
+            document.querySelectorAll("table tbody td:first-child").forEach(title => {
+                title.addEventListener("click", () => {
+                    let table = jQuery(title).closest("table")[0].id;
+
+                    jQuery.post("/admin/cinema-list").then(list => {
+                        let id = title.parentElement.dataset.id;
+                        let contents = `<div class="contents">
+                                            <form action="/admin/timetable/${table}/${id}" method="post">
+                                                <div class="form-group">
+                                                    <label>영화관</label>
+                                                    <select class="form-control" name="cid">`;
+                        list.forEach(item => {
+                            contents +=                 `<option value="${item.id}">${item.name}</option>`;
+                        });
+                        contents +=                `</select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>영화 시작 시간</label>
+                                                    <input type="text" class="form-control" name="start_time">
+                                                </div>
+                                                <button class="btn btn-info" onclick="return confirm('정말로 시간표를 확정하시겠습니까?')">시간표 확정</button>
+                                            </form>
+                                        </div>`;
+                        let $modal = createModal(contents);
+                        showModal($modal);
+                    });
+
+                });
+            });
+        });
+    </script>

@@ -79,9 +79,13 @@ function createModal(content){
 
  function showModal($modal){
     // 기존의 모달은 삭제
-    let exist = document.querySelector(".modal-wrap");
-    if(exist){
-        jQuery(exist).fadeOut('fast', () => exist.remove());
+    let existList = document.querySelectorAll(".modal-wrap");
+    if(existList.length > 0){
+        existList.forEach(exist => {
+            jQuery(exist).clearQueue().fadeOut('fast', () => {
+                exist.remove();
+            });
+        });
     }
     // 새로운 모달 추가
     document.body.append($modal);
@@ -89,6 +93,9 @@ function createModal(content){
     jQuery($modal).fadeIn();
  }
 
+ function hideModal($modal){
+    jQuery($modal).clearQueue().fadeOut('fast', () => $modal.remove());
+ }
 
 /**
  * 에러 메세지 출력

@@ -62,3 +62,8 @@ function time_format($number){
     $min = $number % 60;
     return ($hour > 0 ? "{$hour}시간 " : "")."${min}분";
 }
+
+function time2minute(string $time){
+    if(!preg_match("/^(?<hour>[0-9]{1,2}):(?<minute>[0-5][0-9])$/", $time, $matches)) return null;
+    return (int)$matches['hour'] * 60 + (int)$matches['minute'];
+}

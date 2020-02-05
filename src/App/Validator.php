@@ -86,6 +86,12 @@ class Validator {
             $this->result[] = $this->errors[$key.".". __FUNCTION__];
         }
     }
+    
+    function timetable($key, $value){
+        if(!preg_match("/^[0-9]{1,2}:[0-5][0-9]$/", $value)){
+            $this->result[] = $this->errors[$key.".". __FUNCTION__];
+        }
+    }
 
     function seat_file($key, $value){
         if(isset($value['tmp_name'])){
