@@ -71,13 +71,24 @@
 
             document.querySelectorAll(".seat-btn").forEach(btn => {
                 btn.addEventListener("click", () => {
+                    // 좌석표 생성
+                    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                     let map = btn.dataset.map.split("\n").map(x => x.trim().split(""));
                     let length = map[0].length;
-                    let contents = `<div class="contents"><div id="seat-id" style="grid-template-columns: repeat(100% / ${length})">`;
-                    map.flat().forEach(seat => {
-                        
-                    });
+                    let contents = `<div class="contents" style="width: calc(100vw - 100px)"><div id="seat-map" style="grid-template-columns: repeat(${length}, 1fr)">\n`;
+
+                    for(let y = 0; y < map.length; y++){
+                        let row = map[y];
+                        for(let x = 0; x < row.length; x++ ){
+                            let seat = row[x];
+                            contents += seat != 0 ? `<div class="seat${seat == 2 ? " super-premium" : seat == 1 ? " premium" : ""}">${x+1}${str[y]}</div>\n` : "<div></div>\n";
+                        }
+                    }
                     contents += "</div></div>"
+
+                    // 모달 생성
+                    let modal = createModal(contents);
+                    showModal(modal);
                 });
             });
         };

@@ -517,6 +517,7 @@ footer .copy-right {
 */
 
 #seat-map {
+    max-width: 100%;
     display: grid;
     grid-template-columns: repeat(8, minmax(100px, calc(100% / 8)));
     grid-auto-rows: 100px;
@@ -537,8 +538,8 @@ footer .copy-right {
     cursor: pointer;
 }
 
-#reserve .super-premium { color: var(--red); font-weight: 600; }
-#reserve .premium { color: var(--blue); font-weight: 600; }
+.super-premium { color: var(--red)!important; font-weight: 600; }
+.premium { color: var(--blue)!important; font-weight: 600; }
 #seat-map .seat.super-premium { border-color: var(--red); }
 #seat-map .seat.premium { border-color: var(--blue); }
 #seat-map .seat.reserved {
@@ -551,7 +552,7 @@ footer .copy-right {
 #seat-map .seat.selected {
     position: relative;
     border: 5px solid var(--yellow);
-    color: var(--yellow);
+    color: var(--yellow)!important;
     font-weight: bold; 
     transform: translateY(-30px);
     z-index: 10;
