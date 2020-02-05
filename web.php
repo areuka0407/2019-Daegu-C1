@@ -15,6 +15,9 @@ Router::get("/about", "MainController@aboutPage");
 Router::get("/request", "MainController@requestPage");
 Router::post("/request", "MainController@addRequest");
 
+// Reserve
+Router::get("/reserve", "MainController@reservePage");
+
 
 // Login
 Router::get("/login", "MainController@loginPage");
@@ -47,7 +50,7 @@ Router::get("/admin/timetable", "AdminController@timetablePage");
 // Cinema
 Router::get("/admin/cinema", "AdminController@cinemaPage");
 Router::post("/admin/cinema", "AdminController@addCinema");
-
+Router::get("/admin/cinema-remove/{id}", "AdminController@removeCinema");
 
 
 Router::connect();

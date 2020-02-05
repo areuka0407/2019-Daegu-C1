@@ -18,20 +18,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php foreach ($cinemas as $item): ?>
                             <tr>
-                                <td>롯데시네마</td>
+                                <td><?= $item->name ?></td>
                                 <td>
-                                    <button class="btn btn-primary">좌석 보기</button>
-                                    <button class="btn btn-danger">삭제<button>
+                                    <button class="btn btn-primary seat-btn" data-map="<?= $item->seat_map ?>">좌석 보기</button>
+                                    <a href="/admin/cinema-remove/<?= $item->id ?>" class="btn btn-danger text-white">삭제<a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>CGV</td>
-                                <td>
-                                    <button class="btn btn-primary">좌석 보기</button>
-                                    <button class="btn btn-danger">삭제<button>
-                                </td>
-                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -65,7 +60,6 @@
                 $("#cinema_name"),
                 $("#seat_file")
             ];
-            console.log(inputs);
 
             const errors = {
                 cinema_name: "영화관 명을 입력하세요.",
@@ -75,5 +69,16 @@
             const v = new Validator({form, inputs, errors});
             v.start();
 
+            document.querySelectorAll(".seat-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    let map = btn.dataset.map.split("\n").map(x => x.trim().split(""));
+                    console.log(map);
+                    let length = map[0].length;
+                    let contents = `<div class="contents"><div id="seat-id" style="grid-template-columns: repeat(100% / ${length})">`;
+                    
+
+                    contents += "</div></div>"
+                });
+            });
         };
     </script>

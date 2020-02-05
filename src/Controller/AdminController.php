@@ -154,7 +154,8 @@ class AdminController extends MasterController {
      */
 
     function cinemaPage(){
-        $this->view("admin-cinema");
+        $data['cinemas'] = DB::fetchAll("SELECT * FROM cinemas");
+        $this->view("admin-cinema", $data);
     }
 
     function addCinema(){
@@ -179,6 +180,9 @@ class AdminController extends MasterController {
     }
 
     function removeCinema($id){
-        
+        $find = DB::find("cinemas", $id);
+        if(!$find) return back("해당 영화관을 찾을 수 없습니다...");
+        DB::query("DELETE FROM cinemas WHERE id = ?", [$id]);
+        return redirect("/admin/cinema", "영화관이 삭제되었습니다.", "bg-success");
     }
 }

@@ -72,6 +72,14 @@ class MainController extends MasterController {
         else back("파일 업로드에 실패했습니다.. ");
     }
 
+    /**
+     * 상영작 예매
+     */
+
+    function reservePage(){
+        $this->view("reserve");
+    }
+
 
     /**
      * 로그인 관리
