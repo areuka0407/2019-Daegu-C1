@@ -54,14 +54,11 @@ class AdminController extends MasterController {
 
     function removeSponsor($id){
         $find = DB::find("sponsors", $id);
-        $result = ["success" => false, "message" => "데이터를 삭제할 수 없었습니다..."];
 
         if($find && DB::query("DELETE FROM sponsors WHERE id = ?", [$id])) {
-            $result['success'] = true;
-            $result['message'] = "데이터가 삭제되었습니다.";
+            json_response("데이터가 삭제되었습니다.", true);
         }
-
-        return json_response($result);
+        else json_response("데이터를 삭제할 수 없었습니다...", false);
     }
 
 
@@ -69,7 +66,8 @@ class AdminController extends MasterController {
      * 공식 상영작 관리
      */
     function officialPage(){
-        $this->view("official");
+        $data['officials'] = DB::fetchAll("SELECT * FROM officials");
+        $this->view("admin-official", $data);
     }
 
     function addOfficial(){
@@ -100,7 +98,87 @@ class AdminController extends MasterController {
         } while(is_file($savePath.DS.$saveName));
         
         if(move_uploaded_file($poster['tmp_name'], $savePath.DS.$saveName)){
-            // DB::query("INSERT INTO");
+            $param = [$movie_name, $director, $running_time, $saveName];
+            DB::query("INSERT INTO officials(movie_name, director_name, running_time, poster_filename) VALUES (?, ?, ?, ?)", $param);
+            redirect("/admin/official", "공식 상영작 등록이 완료되었습니다.", "bg-success");
         }
+        else back("이미지 업로드에 실패했습니다...");
+    }
+
+    function removeOfficial($id){
+        $find = DB::find("officials", $id);
+        if(!$find) return json_response("상영작을 찾을 수 없습니다.", false);
+        DB::query("DELETE FROM officials WHERE id = ?", [$id]);
+        return json_response("해당 상영작이 삭제되었습니다.", true);
+    }
+
+
+    /**
+     * 요청작 관리
+     */
+    function requestPage(){
+        $param['requests'] = DB::fetchAll("SELECT * FROM requests");
+        $this->view("admin-request", $param);
+    }
+
+    // 승인
+    function applyRequest($id){
+        $find = DB::find("requests", $id);
+        if(!$find) return back("해당 요청작을 찾을 수 없었습니다...", false);
+        DB::query("UPDATE requests SET status = '승인'");
+
+        return redirect("/admin/request", "해당 요청작의 상태가 '승인'(으)로 변경되었습니다.", "bg-primary");
+    }   
+
+    //반려
+    function returnRequest($id){
+        $find = DB::find("requests", $id);
+        if(!$find) return back("해당 요청작을 찾을 수 없었습니다...", false);
+        DB::query("UPDATE requests SET status = '반려'");
+
+        return redirect("/admin/request", "해당 요청작의 상태가 '반려'(으)로 변경되었습니다.");
+    }
+
+
+    /**
+     * 상영시간표
+     */
+    function timetablePage(){
+        $data['officials'] = DB::fetchAll("SELECT * FROM officials WHERE start_time IS NULL");
+        $data['requests'] = DB::fetchAll("SELECT * FROM requests WHERE start_time IS NULL AND status = '승인'");
+        $this->view("admin-timetable", $data);
+    }
+
+    /**
+     * 영화관 관리
+     */
+
+    function cinemaPage(){
+        $this->view("admin-cinema");
+    }
+
+    function addCinema(){
+        extract($_POST);
+        
+        $inputs = array_merge($_POST, $_FILES);
+        $rules = [ "seat_file" => "seat_file" ];
+        $errors = [
+            "cinema_name" => "영화관 명을 입력하세요.",
+            "seat_file" => "좌석 파일을 첨부하세요.",
+            "seat_file.seat_file" => "잘못된 영화관 좌석 파일입니다."
+        ];
+
+        $validator = new Validator($inputs, $rules, $errors);
+        $validator->check()->execute();
+        
+        $seatFile = $_FILES['seat_file'];
+        $seatMap = file_get_contents($seatFile['tmp_name']);
+
+        DB::query("INSERT INTO cinemas(name, seat_map) VALUES (?, ?)", [$cinema_name, $seatMap]);
+        redirect("/admin/cinema", "영화관이 등록되었습니다.", "bg-success");
+    }
+
+    function removeCinema($id){
+        
     }
 }

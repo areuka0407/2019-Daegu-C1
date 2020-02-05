@@ -24,7 +24,6 @@ class Validator {
     
                     // rules과 키가 같은 요소를 이름으로한 메소드가 있는지 확인
                     $existMethod = is_callable([$this, $ruleName]);
-                    // dd($ruleName);
     
                     if($existMethod){
                         $this->{$ruleName}($key, $value);
@@ -86,5 +85,43 @@ class Validator {
         if(!preg_match("/^[0-9]{3}-[0-9]{2}-[0-9]{5}$/", $value)){
             $this->result[] = $this->errors[$key.".". __FUNCTION__];
         }
+    }
+
+    function seat_file($key, $value){
+        if(isset($value['tmp_name'])){
+            extract($value);
+            $content = file_get_contents($tmp_name);
+    
+            if(!$type || strncmp($type, "text", 4) !== 0){
+                echo "type";
+                $this->result[] = $this->errors[$key.".". __FUNCTION__];
+                return;
+            }
+            if(!$name || strncmp(substr($name, -3), "txt", 3) !== 0){
+                echo "ext";
+                $this->result[] = $this->errors[$key.".". __FUNCTION__];
+                return;
+            }
+
+            $map = explode("\n", $content);
+            $length = strlen(trim($map[0]));
+            
+            for($i = 1; $i < count($map); $i++){
+                $row = trim($map[$i]);
+
+                // 가로 세로 길이가 다를 경우
+                if(strlen($row) !== $length){
+                    $this->result[] = $this->errors[$key.".". __FUNCTION__];
+                    return;
+                }
+
+                // 0~3외의 문자가 있을 경우
+                if(preg_match("/([^0-3]+)/", $row, $matches)){
+                    $this->result[] = $this->errors[$key.".". __FUNCTION__];
+                    return;
+                }
+            }
+        }
+
     }
 }

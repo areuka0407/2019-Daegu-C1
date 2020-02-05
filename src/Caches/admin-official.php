@@ -21,20 +21,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($officials as $item): ?>
                             <tr>
-                                <td>뭔가 멋있는 영화</td>
-                                <td>김민재</td>
-                                <td>1시간 32분</td>
-                                <td>2020-02-01 12:32:02</td>
-                                <td class="delete">×</td>
+                                <td data-poster="<?= $item->poster_filename ?>"><?= $item->movie_name ?></td>
+                                <td><?= $item->director_name ?></td>
+                                <td><?=  time_format($item->running_time)  ?></td>
+                                <td><?=  $item->created_at  ?></td>
+                                <td class="delete" data-id="<?= $item->id ?>">×</td>
                             </tr>
-                            <tr>
-                                <td>유아용 영화</td>
-                                <td>김재이</td>
-                                <td>1시간 54분</td>
-                                <td>2020-02-01 12:32:05</td>
-                                <td class="delete">×</td>
-                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -93,5 +88,32 @@
 
             let v = new Validator({form, inputs, rules, errors});
             v.start();
+
+
+
+            // 제목 클릭시 포스터 팝업 띄우기
+            document.querySelectorAll("table tbody td:first-child").forEach(title => {
+                title.addEventListener("click", e => {
+                    let image_src = title.dataset.poster;
+                    let content = `<div class="contents p-0 w-auto"><img src="/images/posters/${image_src}" alt="${title.innerText}" title="${title.innerText}" height="500"></div>`;
+                    let modal = createModal(content);
+                    showModal(modal);
+                });
+            });
+
+
+            // 삭제버튼시 삭제하기
+            document.querySelectorAll("table tbody .delete").forEach(button => {
+                button.addEventListener("click", e => {
+                    let id = e.target.dataset.id;
+                    jQuery.post("/admin/official-remove/"+id, function({message, success}){
+                        if(success) {
+                            toast(message, "bg-success");
+                            jQuery(button).closest("tr").remove();
+                        }
+                        else toast(message);
+                    });
+                });
+            });
         });
     </script>

@@ -46,7 +46,7 @@ class MasterController {
             $content = file_get_contents($input_path);
             
             // 정규식으로 블레이드 문법을 허용한다.
-            $content = preg_replace("/@(if|for|foreach|while|else if)\((.+)\)/", "<?php $1 ($2): ?>", $content);
+            $content = preg_replace("/@(if|for|foreach|while|elseif)\((.+)\)/", "<?php $1 ($2): ?>", $content);
             $content = preg_replace("/@(endif|endforeach|endfor|endwhile)/", "<?php $1; ?>", $content);
             $content = preg_replace("/@php/", "<?php", $content);
             $content = preg_replace("/@endphp/", "?>", $content);

@@ -65,7 +65,7 @@ class MainController extends MasterController {
         } while(is_file($savePath.DS.$saveName));
 
         if(move_uploaded_file($poster['tmp_name'], $savePath.DS.$saveName)){
-            $param = [$movie_name, $company_name, $ceo_phone, $ceo_email, $director_name, $running_time, $saveName];
+            $param = [$movie_name, $company_name, $ceo_phone, $ceo_email, $business_id, $director_name, $running_time, $saveName];
             DB::query("INSERT INTO requests(movie_name, company_name, ceo_phone, ceo_email, business_id, director_name, running_time, poster_filename) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", $param);
             back("요청이 완료되었습니다.", "bg-success");
         }

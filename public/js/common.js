@@ -49,11 +49,46 @@ function toast(message, background = "bg-red"){
                 }, 500);
             }, 2000);
         });
-    });
-    
-
-    
+    });    
 }
+
+/**
+ * 모달창
+ */
+
+function createModal(content){
+    // 모달 생성
+    let $modal = document.createElement("div");
+    $modal.classList.add("modal-wrap");
+    $modal.innerHTML = content;
+    
+    // 닫기 버튼
+    let $close = document.createElement("button");
+    $close.classList.add("btn-close");
+    $close.innerHTML = `&times;`;
+
+    let $contents = $modal.querySelector(".contents");
+    if($contents) $contents.append($close);
+    else $modal.append($close);
+    $close.addEventListener("click", () => {
+        jQuery($modal).fadeOut('fast', () => $modal.remove());
+    });    
+
+    return $modal;
+ }
+
+ function showModal($modal){
+    // 기존의 모달은 삭제
+    let exist = document.querySelector(".modal-wrap");
+    if(exist){
+        jQuery(exist).fadeOut('fast', () => exist.remove());
+    }
+    // 새로운 모달 추가
+    document.body.append($modal);
+    jQuery($modal).hide();
+    jQuery($modal).fadeIn();
+ }
+
 
 /**
  * 에러 메세지 출력

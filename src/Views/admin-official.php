@@ -21,15 +21,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($officials as $item): ?>
+                        @foreach($officials as $item)
                             <tr>
-                                <td data-poster="<?= $item->poster_filename ?>"><?= $item->movie_name ?></td>
-                                <td><?= $item->director_name ?></td>
-                                <td><?=  time_format($item->running_time)  ?></td>
-                                <td><?=  $item->created_at  ?></td>
-                                <td class="delete" data-id="<?= $item->id ?>">×</td>
+                                <td data-poster="{{$item->poster_filename}}">{{$item->movie_name}}</td>
+                                <td>{{$item->director_name}}</td>
+                                <td>{{ time_format($item->running_time) }}</td>
+                                <td>{{ $item->created_at }}</td>
+                                <td class="delete" data-id="{{$item->id}}">×</td>
                             </tr>
-                        <?php endforeach; ?>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -29,9 +29,10 @@ function back($message = null, $background = "bg-danger"){
     exit;
 }
 
-function json_response($data){
+function json_response($message, $success, $anything = []){
+    $data = ["message" => $message, "success" => $success];
     header("Content-Type: application/json");
-    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    echo json_encode(array_merge($data, $anything), JSON_UNESCAPED_UNICODE);
 }
 
 function checkUp(){
@@ -54,4 +55,10 @@ function random_varchar($length = 30){
         $result .= $string[random_int(0,  strlen($string) - 1)];
     }
     return $result;
+}
+
+function time_format($number){
+    $hour = floor($number / 60);
+    $min = $number % 60;
+    return ($hour > 0 ? "{$hour}시간 " : "")."${min}분";
 }
