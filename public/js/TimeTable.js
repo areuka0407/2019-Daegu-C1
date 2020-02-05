@@ -96,7 +96,6 @@ class TimeTable {
     drawSchedule({cinemaList, schedule}){
         cinemaList.forEach(cinema => {
             let showList = schedule.filter(item => item.cinema_name === cinema.name);
-            
             showList.forEach(item => {
                 let startX = cinema.X + (item.start_time - 480) * cinema.boxW / 1080;
                 let endX = cinema.X + (item.end_time - 480) * cinema.boxW / 1080;

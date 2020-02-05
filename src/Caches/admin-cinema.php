@@ -43,7 +43,7 @@
                             <label for="seat_file">좌석 파일</label>
                             <div class="custom-file">
                                 <label for="seat_file" class="custom-file-label"></label>
-                                <input type="file" id="seat_file" name="seat_file" class="custom-file-input">
+                                <input type="file" id="seat_file" name="seat_file" class="custom-file-input" accept=".txt">
                             </div>
                         </div>
                         <button class="btn btn-dark px-5 py-2 mt-4">추가하기</button>

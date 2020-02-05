@@ -93,27 +93,32 @@ class Validator {
         }
     }
 
+    function seat($key, $value){
+        if(!preg_match("/^[0-9][A-Z]$/", $value)){
+            $this->result[] = $this->errors[$key.".". __FUNCTION__];
+        }
+    }
+
     function seat_file($key, $value){
         if(isset($value['tmp_name'])){
             extract($value);
             $content = file_get_contents($tmp_name);
     
             if(!$type || strncmp($type, "text", 4) !== 0){
-                echo "type";
                 $this->result[] = $this->errors[$key.".". __FUNCTION__];
                 return;
             }
             if(!$name || strncmp(substr($name, -3), "txt", 3) !== 0){
-                echo "ext";
                 $this->result[] = $this->errors[$key.".". __FUNCTION__];
                 return;
             }
 
-            $map = explode("\n", $content);
+            $map = explode("\r\n", $content);
             $length = strlen(trim($map[0]));
+
             
             for($i = 1; $i < count($map); $i++){
-                $row = trim($map[$i]);
+                $row = $map[$i];
 
                 // 가로 세로 길이가 다를 경우
                 if(strlen($row) !== $length){
@@ -128,6 +133,5 @@ class Validator {
                 }
             }
         }
-
     }
 }

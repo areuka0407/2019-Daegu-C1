@@ -121,11 +121,17 @@ class AdminController extends MasterController {
         $this->view("admin-request", $param);
     }
 
+    // 하나만 가져오기
+    function getRequest($id){
+        header("Content-Type: application/json");
+        echo json_encode(DB::find("requests", $id));
+    }
+
     // 승인
     function applyRequest($id){
         $find = DB::find("requests", $id);
         if(!$find) return back("해당 요청작을 찾을 수 없었습니다...", false);
-        DB::query("UPDATE requests SET status = '승인'");
+        DB::query("UPDATE requests SET status = '승인' WHERE id = ?", [$id]);
 
         return redirect("/admin/request", "해당 요청작의 상태가 '승인'(으)로 변경되었습니다.", "bg-primary");
     }   
@@ -134,7 +140,7 @@ class AdminController extends MasterController {
     function returnRequest($id){
         $find = DB::find("requests", $id);
         if(!$find) return back("해당 요청작을 찾을 수 없었습니다...", false);
-        DB::query("UPDATE requests SET status = '반려'");
+        DB::query("UPDATE requests SET status = '반려' WHERE id = ?", [$id]);
 
         return redirect("/admin/request", "해당 요청작의 상태가 '반려'(으)로 변경되었습니다.");
     }
@@ -174,22 +180,21 @@ class AdminController extends MasterController {
 
         $validator->check()->execute(...$errors);
 
-        DB::query("UPDATE `{$type}` SET start_time = ?, end_time = ?, cinema_id = ?", [$start_time, $end_time, $cid]);
+        DB::query("UPDATE `{$type}` SET start_time = ?, end_time = ?, cinema_id = ? WHERE id = ?", [$start_time, $end_time, $cid, $id]);
         
         redirect("/admin/timetable", "시간표가 확정되었습니다.", "bg-success");
     }
 
     function getTimetable(){
-        $officials = DB::fetchAll(  "SELECT movie_name, start_time, end_time, C.name cinema_name
+        $officials = DB::fetchAll(  "SELECT concat('officials.', C.id) id, movie_name, start_time, end_time, C.name cinema_name
                                     FROM officials O
                                     LEFT JOIN cinemas C ON C.id = O.cinema_id
                                     WHERE start_time IS NOT NULL AND end_time IS NOT NULL AND C.name IS NOT NULL");
-        
-        $requests = DB::fetchAll(  "SELECT movie_name, start_time, end_time, C.name cinema_name
+                                    
+        $requests = DB::fetchAll(  "SELECT concat('requests', C.id) id, movie_name, start_time, end_time, C.name cinema_name
                                     FROM requests O
                                     LEFT JOIN cinemas C ON C.id = O.cinema_id
                                     WHERE start_time IS NOT NULL AND end_time IS NOT NULL AND C.name IS NOT NULL");
-        
         header("Content-Type: application/json");
         echo json_encode(array_merge($officials, $requests), JSON_UNESCAPED_UNICODE);
     }
@@ -221,8 +226,7 @@ class AdminController extends MasterController {
         $message = [];
         if($overlap) $message[] = "중복되는 영화관 명입니다.";
 
-        $validator->execute($message);
-        exit;
+        $validator->execute(...$message);
         
         $seatFile = $_FILES['seat_file'];
         $seatMap = file_get_contents($seatFile['tmp_name']);

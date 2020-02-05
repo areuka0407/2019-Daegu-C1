@@ -17,6 +17,8 @@ Router::post("/request", "MainController@addRequest");
 
 // Reserve
 Router::get("/reserve", "MainController@reservePage");
+Router::post("/reserve", "MainController@addReserve");
+Router::post("/reserve/list", "MainController@getReserveList");
 
 
 // Login
@@ -24,6 +26,10 @@ Router::get("/login", "MainController@loginPage");
 Router::post("/login", "MainController@login");
 
 Router::get("/logout", "MainController@logout");
+
+
+// AJAX
+Router::post("/movie-list/by-cinema/{cinema_id}", "MainController@getMovieListByCinema");
 
 /**
  * Admin
@@ -41,6 +47,7 @@ Router::post("/admin/official-remove/{id}", "AdminController@removeOfficial");
 
 // Request
 Router::get("/admin/request", "AdminController@requestPage");
+Router::post("/admin/request/{id}", "AdminController@getRequest");
 Router::get("/admin/request-apply/{id}", "AdminController@applyRequest");
 Router::get("/admin/request-return/{id}", "AdminController@returnRequest");
 
